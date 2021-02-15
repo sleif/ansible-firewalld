@@ -1,0 +1,35 @@
+---
+
+- name: Install firewalld
+  package:
+    name: firewalld
+
+- name: Enable firewalld service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Uninstall iptables-services
+  package:
+    name: "iptables-services"
+    state: absent
+
+- name: python-firewall installieren (CentOS 7)
+  package: name=python-firewall
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == '7'
+
+- name: python-firewall installieren (CentOS 8)
+  package: name=python3-firewall
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == '8'
+
+- name: Port OpenSSH oeffnen
+  firewalld:
+    service: ssh
+    permanent: true
+    immediate: true
+    state: enabled
