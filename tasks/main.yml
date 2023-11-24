@@ -8,7 +8,7 @@
   ansible.builtin.systemd:
     name: firewalld
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Uninstall iptables-services
   ansible.builtin.package:
@@ -16,13 +16,15 @@
     state: absent
 
 - name: python-firewall installieren (CentOS 7)
-  ansible.builtin.package: name=python-firewall
+  ansible.builtin.package:
+    name: python-firewall
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == '7'
 
 - name: python-firewall installieren (CentOS 8)
-  ansible.builtin.package: name=python3-firewall
+  ansible.builtin.package:
+    name: python3-firewall
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == '8'
